@@ -72,6 +72,10 @@ class _DeferredImportExceptionContextManager:
             else:
                 assert False
 
+            # Tracebacks (incl. of chained exceptions) would keep all callers' frames alive.
+            exc_value.__traceback__ = None
+            exc_value.__context__ = None
+            exc_value.__cause__ = None
             self._deferred = (exc_value, message)
             return True
         return None
